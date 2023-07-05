@@ -1,31 +1,38 @@
 // Card data
+// const cardsData = [
+//     { id: 1, label: 'Card 1', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...' },
+//     { id: 2, label: 'Card 2', content: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...' },
+//     // Add more cards here
+//   ];
+// instead of hard coding the content, we can use a function to get content of each card from txt file
 const cardsData = [
-    { id: 1, label: 'Card 1', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...' },
-    { id: 2, label: 'Card 2', content: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...' },
+    { id: 1, label: 'Card 1', content: getCardContent(1) },
+    { id: 2, label: 'Card 2', content: getCardContent(2) },
     // Add more cards here
   ];
-  
-  // Load cards
+  function getCardContent(cardId) {
+    const request = new XMLHttpRequest();
+    request.open('GET', `content/${cardId}.txt`, false); // false makes the request synchronous
+    // the file looks like 'content/1.txt' or 'content/2.txt'
+    request.send();
+    return request.responseText;
+  }
+
+  // LOAD CARDS
   const cardsContainer = document.getElementById('cards-container');
-  
   cardsData.forEach(card => {
     const cardElement = createCardElement(card);
     cardElement.addEventListener('click', () => showCardPage(card));
     cardsContainer.appendChild(cardElement);
   });
-  
-    // to save the order of the cards in the local browser cache wih
-    // the help of the localStorage API
-    // Save cards order
-    const saveBtn = document.getElementById('save-btn');
-
-    saveBtn.addEventListener('click', () => {
+  // SAVE CARD ORDER
+  const saveBtn = document.getElementById('save-btn');
+  saveBtn.addEventListener('click', () => {
         const cards = Array.from(cardsContainer.children);
         const cardsOrder = cards.map(card => card.getAttribute('id'));
         localStorage.setItem('cardsOrder', JSON.stringify(cardsOrder));
     });
 
-    // Load cards order
     const cardsOrder = JSON.parse(localStorage.getItem('cardsOrder'));
     if (cardsOrder) {
         cardsOrder.forEach(cardId => {

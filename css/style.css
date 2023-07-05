@@ -5,7 +5,7 @@ body {
   
   #cards-container {
     display: flex;
-    flex-wrap: wrap; /* Wrap cards to next line when there are too many */
+    flex-wrap: wrap;
     justify-content: center;
     padding: 10px;
   }

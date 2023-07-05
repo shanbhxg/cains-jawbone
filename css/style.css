@@ -1,0 +1,145 @@
+body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  #cards-container {
+    display: flex;
+    flex-wrap: wrap; /* Wrap cards to next line when there are too many */
+    justify-content: center;
+    padding: 10px;
+  }
+  
+  .card {
+    width: calc(20% - 20px);
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #000;
+    cursor: pointer;
+  }
+  
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .modal {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 80%;
+    max-height: 80%;
+    overflow-y: auto;
+  }
+  
+  .modal-content {
+    margin-bottom: 20px;
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  #notes-container {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: -250px; /* Initially hidden */
+    width: 250px;
+    background-color: #fff;
+    transition: left 0.3s;
+  }
+  
+  #notes-container.visible {
+    left: 0; /* Visible position */
+  }
+  
+  #notes-header {
+    height: 30px;
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+  
+  #notes-header:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  
+  
+  #notes {
+    width: 100%;
+    height: calc(100% - 30px);
+    padding: 5px;
+    resize: none;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  #sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: -250px; /* Initially hidden */
+    width: 250px;
+    background-color: #fff;
+    transition: right 0.3s;
+    overflow: hidden;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  #sidebar.open {
+    right: 0; /* Visible position */
+  }
+  
+  #notes-header {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  #notes-header h2 {
+    margin: 0;
+    color: #fff;
+  }
+  
+  #notes {
+    width: 100%;
+    height: calc(100% - 40px);
+    padding: 10px;
+    resize: none;
+  }
+  
+  #save-btn {
+    position: absolute;
+    font-size: large;
+    bottom: 10px;
+    right: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+  }
+
+  #notes-btn {
+    position: absolute;
+    font-size: large;
+    bottom: 50px;
+    right: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+  }

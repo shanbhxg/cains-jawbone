@@ -3,17 +3,17 @@ body {
     padding: 0;
   }
   
-  #cards-container {
+  #pages-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     padding: 10px;
   }
   
-  .card {
-    width: calc(20% - 20px);
+  .page {
+    width: calc(20% - 25px); /* 20% of the width of the container minus 20px */
     margin: 10px;
-    padding: 10px;
+    padding: 15px;
     border: 1px solid #000;
     cursor: pointer;
   }
@@ -121,10 +121,11 @@ body {
   }
   
   #save-btn {
-    position: absolute;
-    font-size: large;
-    bottom: 10px;
-    right: 10px;
+    /* the position of this remains the same on the page despite scrolling */
+    position: sticky;
+    font-size: 200%;
+    bottom:10%;
+    left: 95%;
     padding: 10px;
     border: none;
     border-radius: 5px;
@@ -133,10 +134,10 @@ body {
   }
 
   #notes-btn {
-    position: absolute;
-    font-size: large;
-    bottom: 50px;
-    right: 10px;
+    position: sticky;
+    font-size: 200%;
+    bottom: 18%;
+    left: 95%;
     padding: 10px;
     border: none;
     border-radius: 5px;

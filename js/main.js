@@ -1,110 +1,111 @@
-// Card data
-// const cardsData = [
-//     { id: 1, label: 'Card 1', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...' },
-//     { id: 2, label: 'Card 2', content: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...' },
-//     // Add more cards here
-//   ];
-// instead of hard coding the content, we can use a function to get content of each card from txt file
-const cardsData = [
-    { id: 1, label: 'Card 1', content: getCardContent(1) },
-    { id: 2, label: 'Card 2', content: getCardContent(2) },
-    // Add more cards here
-  ];
-  function getCardContent(cardId) {
+const pagesData = [
+  ]; 
+  for (let i = 1; i <= 100; i++) {
+    pagesData.push({ id: i, content: getpageContent(i) });
+  }
+  function getpageContent(pageId) {
     const request = new XMLHttpRequest();
-    request.open('GET', `content/${cardId}.txt`, false); // false makes the request synchronous
-    // the file looks like 'content/1.txt' or 'content/2.txt'
+    request.open('GET', `content/page${pageId}.txt`, false); // false makes the request synchronous
+    // the files that are being requested are in the content folder eg 'content/page1.txt'
     request.send();
     return request.responseText;
   }
 
-  // LOAD CARDS
-  const cardsContainer = document.getElementById('cards-container');
-  cardsData.forEach(card => {
-    const cardElement = createCardElement(card);
-    cardElement.addEventListener('click', () => showCardPage(card));
-    cardsContainer.appendChild(cardElement);
+  // load pages
+  const pagesContainer = document.getElementById('pages-container');
+  pagesData.forEach(page => {
+    const pageElement = createpageElement(page);
+    pageElement.addEventListener('click', () => showpagePage(page));
+    pagesContainer.appendChild(pageElement);
   });
-  // SAVE CARD ORDER
+
+  // saving page order
   const saveBtn = document.getElementById('save-btn');
   saveBtn.addEventListener('click', () => {
-        const cards = Array.from(cardsContainer.children);
-        const cardsOrder = cards.map(card => card.getAttribute('id'));
-        localStorage.setItem('cardsOrder', JSON.stringify(cardsOrder));
-    });
+        const pages = Array.from(pagesContainer.children);
+        const pagesOrder = pages.map(page => page.getAttribute('id'));
+        localStorage.setItem('pagesOrder', JSON.stringify(pagesOrder));
+        location.reload();
+      });
 
-    const cardsOrder = JSON.parse(localStorage.getItem('cardsOrder'));
-    if (cardsOrder) {
-        cardsOrder.forEach(cardId => {
-        const card = document.getElementById(cardId);
-        cardsContainer.appendChild(card);
+
+    const pagesOrder = JSON.parse(localStorage.getItem('pagesOrder'));
+    if (pagesOrder) {
+        pagesOrder.forEach(pageId => {
+        const page = document.getElementById(pageId);
+        pagesContainer.appendChild(page);
         });
     }
 
-  // Drag and drop functionality
-  let draggedCardId = null;
+  // drag and drop functionality
+  let draggedpageId = null;
   
-  cardsContainer.addEventListener('dragstart', event => {
-    draggedCardId = event.target.getAttribute('id');
+  pagesContainer.addEventListener('dragstart', event => {
+    draggedpageId = event.target.getAttribute('id');
   });
   
-  cardsContainer.addEventListener('dragover', event => {
+  pagesContainer.addEventListener('dragover', event => {
     event.preventDefault();
   });
   
-  cardsContainer.addEventListener('drop', event => {
+  pagesContainer.addEventListener('drop', event => {
     event.preventDefault();
-    const targetCardId = event.target.getAttribute('id');
+    const targetpageId = event.target.getAttribute('id');
   
-    if (draggedCardId && targetCardId && draggedCardId !== targetCardId) {
-      const draggedCard = document.getElementById(draggedCardId);
-      const targetCard = document.getElementById(targetCardId);
-      const draggedCardIndex = getIndex(draggedCard); 
-      const targetCardIndex = getIndex(targetCard);
+    if (draggedpageId && targetpageId && draggedpageId !== targetpageId) {
+      const draggedpage = document.getElementById(draggedpageId);
+      const targetpage = document.getElementById(targetpageId);
+      const draggedpageIndex = getIndex(draggedpage); 
+      const targetpageIndex = getIndex(targetpage);
   
-      if (draggedCardIndex !== -1 && targetCardIndex !== -1) {
-        const cardData = cardsData[draggedCardIndex];
-        cardsData.splice(draggedCardIndex, 1); 
-        cardsData.splice(targetCardIndex, 0, cardData);
+      if (draggedpageIndex !== -1 && targetpageIndex !== -1) {
+        const pageData = pagesData[draggedpageIndex];
+        pagesData.splice(draggedpageIndex, 1); 
+        pagesData.splice(targetpageIndex, 0, pageData);
   
-        cardsContainer.insertBefore(draggedCard, targetCard);
+        pagesContainer.insertBefore(draggedpage, targetpage);
       }
     }
   });
   
   function getIndex(element) {
-    const cards = Array.from(cardsContainer.children);
-    return cards.indexOf(element);
+    const pages = Array.from(pagesContainer.children);
+    return pages.indexOf(element);
   }
   
-  function createCardElement(card) {
-    const cardElement = document.createElement('div');
-    cardElement.classList.add('card');
-    cardElement.setAttribute('id', `card-${card.id}`);
-    cardElement.setAttribute('draggable', 'true'); // Enable draggable attribute
-    cardElement.innerHTML = `
-      <h3>${card.label}</h3>
-      <p>${card.content}</p>
+
+  function createpageElement(page) {
+    const pageElement = document.createElement('div');
+    pageElement.classList.add('page');
+    pageElement.setAttribute('id', `page-${page.id}`);
+    pageElement.setAttribute('draggable', 'true'); // Enable draggable attribute
+    pageElement.innerHTML = `
+      <p>${page.content}</p>
     `;
-    return cardElement;
+    return pageElement;
   }
   
   
-  function showCardPage(card) {
+  function showpagePage(page) {
     const overlay = document.createElement('div');
     overlay.classList.add('overlay');
-  
+
     const modal = document.createElement('div');
     modal.classList.add('modal');
   
     const content = document.createElement('div');
     content.classList.add('modal-content');
-    content.textContent = card.content;
-  
+    content.textContent = page.content;
+
     const closeBtn = document.createElement('span');
     closeBtn.classList.add('close-btn');
     closeBtn.innerHTML = '&times;';
-  
+    // on hover, the close button changes color to black from white
+    closeBtn.style.color = 'white';
+    closeBtn.addEventListener('mouseover', () => {
+      closeBtn.style.color = 'red';
+    });
+
     modal.appendChild(content);
     modal.appendChild(closeBtn);
     overlay.appendChild(modal);
@@ -113,45 +114,86 @@ const cardsData = [
     closeBtn.addEventListener('click', () => {
       document.body.removeChild(overlay);
     });
+
+    // on clicking outside the modal, the modal closes
+    window.addEventListener('click', event => {
+      if (event.target === overlay) {
+        document.body.removeChild(overlay);
+      }
+    }
+    );
   }
-// Drag and drop functionality for card order
-cardsContainer.addEventListener('dragstart', event => {
-    draggedCardId = event.target.getAttribute('id');
+
+// drag and drop functionality for page order
+pagesContainer.addEventListener('dragstart', event => {
+    draggedpageId = event.target.getAttribute('id');
     event.dataTransfer.setData('text/plain', ''); // Required for Firefox to enable drag
   });
   
-  cardsContainer.addEventListener('dragover', event => {
+  pagesContainer.addEventListener('dragover', event => {
     event.preventDefault();
   });
   
-  cardsContainer.addEventListener('drop', event => {
+  pagesContainer.addEventListener('drop', event => {
     event.preventDefault();
-    const targetCardId = event.target.getAttribute('id');
+    const targetpageId = event.target.getAttribute('id');
   
-    if (draggedCardId && targetCardId && draggedCardId !== targetCardId) {
-      const draggedCard = document.getElementById(draggedCardId);
-      const targetCard = document.getElementById(targetCardId);
-      const draggedCardIndex = getIndex(draggedCard);
-      const targetCardIndex = getIndex(targetCard);
+    if (draggedpageId && targetpageId && draggedpageId !== targetpageId) {
+      const draggedpage = document.getElementById(draggedpageId);
+      const targetpage = document.getElementById(targetpageId);
+      const draggedpageIndex = getIndex(draggedpage);
+      const targetpageIndex = getIndex(targetpage);
   
-      if (draggedCardIndex !== -1 && targetCardIndex !== -1) {
-        const cardData = cardsData[draggedCardIndex];
-        cardsData.splice(draggedCardIndex, 1);
-        cardsData.splice(targetCardIndex, 0, cardData);
+      if (draggedpageIndex !== -1 && targetpageIndex !== -1) {
+        const pageData = pagesData[draggedpageIndex];
+        pagesData.splice(draggedpageIndex, 1);
+        pagesData.splice(targetpageIndex, 0, pageData);
   
-        cardsContainer.insertBefore(draggedCard, targetCard);
+        pagesContainer.insertBefore(draggedpage, targetpage);
       }
     }
   });
   
-  function getIndex(element) {
-    const cards = Array.from(cardsContainer.children);
-    return cards.indexOf(element);
-  }
-// Notes functionality
+pagesContainer.addEventListener('contextmenu', event => {
+    event.preventDefault();
+    const page = event.target.closest('.page');
+    if (page) {
+      const pageId = page.getAttribute('id');
+      const pageIndex = getIndex(page);
+      page.setAttribute('title', `page #${pageIndex + 1}`);
+      page.classList.add('selected');
+      const selectedpages = document.querySelectorAll('.selected');
+      if (selectedpages.length === 2) {
+        const firstpage = selectedpages[0];
+        const secondpage = selectedpages[1];
+        const firstpageIndex = getIndex(firstpage);
+        const secondpageIndex = getIndex(secondpage);
+        const firstpageData = pagesData[firstpageIndex];
+        const secondpageData = pagesData[secondpageIndex];
+        pagesData[firstpageIndex] = secondpageData;
+        pagesData[secondpageIndex] = firstpageData;
+        pagesContainer.insertBefore(secondpage, firstpage);
+        firstpage.classList.remove('selected');
+        secondpage.classList.remove('selected');
+      }
+    }
+  });
+
+// notes functionality
 const notesContainer = document.getElementById('notes-container');
 const notesToggle = document.getElementById('notes-btn');
 
 notesToggle.addEventListener('click', () => {
   notesContainer.classList.toggle('visible');
 });
+
+// on hovering over the page, the rank of page in the array is displayed
+pagesContainer.addEventListener('mouseover', event => {
+  const page = event.target.closest('.page');
+  if (page) {
+    const pageId = page.getAttribute('id');
+    const pageIndex = getIndex(page);
+    page.setAttribute('title', `page #${pageIndex + 1}`);
+  }
+}
+);

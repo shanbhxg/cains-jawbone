@@ -19,18 +19,20 @@ const pagesData = [
     pagesContainer.appendChild(pageElement);
   });
 
-  // saving page order
-  const saveBtn = document.getElementById('save-btn');
-  saveBtn.addEventListener('click', () => {
-        const pages = Array.from(pagesContainer.children);
-        const pagesOrder = pages.map(page => page.getAttribute('id'));
-        localStorage.setItem('pagesOrder', JSON.stringify(pagesOrder));
-        location.reload();
-      });
+  // load color 
+  const savedPagesColour = localStorage.getItem('pagesColour');
+if (savedPagesColour) {
+  const pagesColour = JSON.parse(savedPagesColour);
+  pagesColour.forEach((color, index) => {
+    const page = document.getElementById(`page-${index + 1}`);
+    if (page) {
+      page.style.backgroundColor = color;
+    }
+  });
+}
 
-
-    const pagesOrder = JSON.parse(localStorage.getItem('pagesOrder'));
-    if (pagesOrder) {
+  const pagesOrder = JSON.parse(localStorage.getItem('pagesOrder'));
+  if (pagesOrder) {
         pagesOrder.forEach(pageId => {
         const page = document.getElementById(pageId);
         pagesContainer.appendChild(page);
@@ -122,7 +124,48 @@ const pagesData = [
       }
     }
     );
+
+    // add a colour button which changes the background colour of the page picking from a colour palette
+    const colourBtn = document.createElement('button');
+    colourBtn.classList.add('colour-btn');
+    colourBtn.textContent = 'Change Background Colour';
+    colourBtn.addEventListener('click', () => {
+      // the user is now displayed a colour palette to choose from
+      const colourPalette = document.createElement('div');
+      colourPalette.classList.add('colour-palette');
+      overlay.appendChild(colourPalette);
+      const colours = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'cyan', 'magenta', 'plum', 'turquoise', 'lime', 'gold', 'silver', 'white', 'black'];
+      colours.forEach(colour => {
+        const colourBtn = document.createElement('button');
+        colourBtn.classList.add('colour-btn');
+        colourBtn.textContent = colour;
+        colourBtn.style.backgroundColor = colour;
+        colourBtn.addEventListener('click', () => {
+          // this labels the current page with the colour chosen by the user
+          const pageElement = document.getElementById(`page-${page.id}`);
+          pageElement.style.backgroundColor = colour;
+        }
+        );
+        colourPalette.appendChild(colourBtn);
   }
+  );
+}
+    );
+  modal.appendChild(colourBtn);
+  }
+
+// saving page order
+const saveBtn = document.getElementById('save-btn');
+saveBtn.addEventListener('click', () => {
+      const pages = Array.from(pagesContainer.children);
+      const pagesOrder = pages.map(page => page.getAttribute('id'));
+      const pagesColour = pages.map(page => page.style.backgroundColor);
+      // the notes from the textarea under the id 'notes' are saved
+      const notes = document.getElementById('notes').value;
+      localStorage.setItem('notes', notes);
+      localStorage.setItem('pagesColour', JSON.stringify(pagesColour));
+      localStorage.setItem('pagesOrder', JSON.stringify(pagesOrder));
+    });
 
 // drag and drop functionality for page order
 pagesContainer.addEventListener('dragstart', event => {
@@ -183,9 +226,16 @@ pagesContainer.addEventListener('contextmenu', event => {
 const notesContainer = document.getElementById('notes-container');
 const notesToggle = document.getElementById('notes-btn');
 
+// toggle the notes container
 notesToggle.addEventListener('click', () => {
   notesContainer.classList.toggle('visible');
 });
+
+// load the notes from local storage to the textarea
+const savedNotes = localStorage.getItem('notes');
+if (savedNotes) {
+  document.getElementById('notes').value = savedNotes;
+}
 
 // on hovering over the page, the rank of page in the array is displayed
 pagesContainer.addEventListener('mouseover', event => {
@@ -197,3 +247,4 @@ pagesContainer.addEventListener('mouseover', event => {
   }
 }
 );
+

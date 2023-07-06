@@ -1,8 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pathway+Extreme:wght@300&display=swap');
 body {
     margin: 0;
     padding: 0;
+    font-family: 'Pathway Extreme', sans-serif;
   }
   
+button {
+  font-family: 'Pathway Extreme', sans-serif;
+}
   #pages-container {
     display: flex;
     flex-wrap: wrap;
@@ -31,12 +37,12 @@ body {
   }
   
   .modal {
-    background-color: #fff;
     padding: 20px;
     border-radius: 5px;
     max-width: 80%;
     max-height: 80%;
     overflow-y: auto;
+    background-color: #fff;
   }
   
   .modal-content {

@@ -1,0 +1,7 @@
+The Cain's Jawbone is a 100-page book. The paragraphs are not in order, and the book is not paginated. The challenge is to read the book in the correct order.
+This website is a tool to help you do that. It has all the pages of the book in "cards" that you can <b> drag and drop </b> into whatever order you like or <b> swap </b> them by right-clicking. 
+To save the order of cards, click the save button. The order is saved in your browser's local storage, so it should be there when you come back to the site.
+There is a sidebar where you can write notes about the book, accessed by clicking on the notes button. These are also saved in your browser's local storage.
+You can label the cards by changing their colour. This is useful for grouping cards together, or for marking cards that you have read.
+Hope this helps you solve the puzzle!
+This website is a work in progress. 

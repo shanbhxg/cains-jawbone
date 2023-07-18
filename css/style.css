@@ -127,7 +127,6 @@ button {
   }
   
   #save-btn {
-    /* the position of this remains the same on the page despite scrolling */
     position: sticky;
     font-size: 200%;
     bottom:10%;
@@ -143,6 +142,18 @@ button {
     position: sticky;
     font-size: 200%;
     bottom: 18%;
+    left: 95%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+  }
+
+  #help-btn {
+    position: sticky;
+    font-size: 200%;
+    bottom: 26%;
     left: 95%;
     padding: 10px;
     border: none;

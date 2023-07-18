@@ -88,7 +88,7 @@ if (savedPagesColour) {
   }
   
   
-  function showpagePage(page) {
+  function showpagePage(page) { // this function is called when a page is clicked
     const overlay = document.createElement('div');
     overlay.classList.add('overlay');
 
@@ -96,7 +96,7 @@ if (savedPagesColour) {
     modal.classList.add('modal');
   
     const content = document.createElement('div');
-    content.classList.add('modal-content');
+    content.classList.add('modal-content'); 
     content.textContent = page.content;
 
     const closeBtn = document.createElement('span');
@@ -107,7 +107,6 @@ if (savedPagesColour) {
     closeBtn.addEventListener('mouseover', () => {
       closeBtn.style.color = 'red';
     });
-
     modal.appendChild(content);
     modal.appendChild(closeBtn);
     overlay.appendChild(modal);
@@ -125,12 +124,18 @@ if (savedPagesColour) {
     }
     );
 
+
+
     // add a colour button which changes the background colour of the page picking from a colour palette
     const colourBtn = document.createElement('button');
     colourBtn.classList.add('colour-btn');
     colourBtn.textContent = 'Change Background Colour';
     colourBtn.addEventListener('click', () => {
       // the user is now displayed a colour palette to choose from
+      // if there is already a colour palette, do not create another one
+      if (document.querySelector('.colour-palette')) {
+        return;
+      }
       const colourPalette = document.createElement('div');
       colourPalette.classList.add('colour-palette');
       overlay.appendChild(colourPalette);
@@ -144,15 +149,18 @@ if (savedPagesColour) {
           // this labels the current page with the colour chosen by the user
           const pageElement = document.getElementById(`page-${page.id}`);
           pageElement.style.backgroundColor = colour;
+          modal.style.border = 'thick solid ' + colour;
         }
         );
         colourPalette.appendChild(colourBtn);
   }
+  
   );
 }
     );
   modal.appendChild(colourBtn);
   }
+
 
 // saving page order
 const saveBtn = document.getElementById('save-btn');
@@ -247,4 +255,66 @@ pagesContainer.addEventListener('mouseover', event => {
   }
 }
 );
+
+// on clicking help button display help modal
+const helpBtn = document.getElementById('help-btn');
+helpBtn.addEventListener('click', () => {
+  const overlay = document.createElement('div');
+  overlay.classList.add('overlay');
+
+  const modal = document.createElement('div');
+  modal.classList.add('modal');
+
+  const content = document.createElement('div');
+  content.classList.add('modal-content');
+  // the inner HTML of the modal is fetched from content/help.txt
+  const request = new XMLHttpRequest();
+  request.open('GET', 'content/help.txt', false); // false makes the request synchronous
+  request.send();
+  content.innerHTML = request.responseText;
+
+  const closeBtn = document.createElement('span');
+  closeBtn.classList.add('close-btn');
+  closeBtn.innerHTML = '&times;';
+  // on hover, the close button changes color to black from white
+  closeBtn.style.color = 'white';
+  closeBtn.addEventListener('mouseover', () => {
+    closeBtn.style.color = 'red';
+  });
+
+  modal.appendChild(content);
+  modal.appendChild(closeBtn);
+  overlay.appendChild(modal);
+  document.body.appendChild(overlay);
+
+  closeBtn.addEventListener('click', () => {
+    document.body.removeChild(overlay);
+  });
+
+  // on clicking outside the modal, the modal closes
+  window.addEventListener('click', event => {
+    if (event.target === overlay) {
+      document.body.removeChild(overlay);
+    }
+  }
+  );
+}
+);
+
+function highlight() {
+  const selection = window.getSelection();
+  const range = selection.getRangeAt(0);
+  const selectedText = range.extractContents();
+  const span = document.createElement('span');
+  span.style.backgroundColor = 'yellow';
+  span.appendChild(selectedText);
+  range.insertNode(span);
+}
+
+
+// for mouse drag
+document.addEventListener('mouseup', highlight);
+
+
+
 

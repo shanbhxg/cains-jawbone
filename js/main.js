@@ -257,8 +257,8 @@ pagesContainer.addEventListener('mouseover', event => {
 );
 
 // on clicking help button display help modal
-const helpBtn = document.getElementById('help-btn');
-helpBtn.addEventListener('click', () => {
+const helpFn = document.getElementById('help-btn');
+function helpBtn() {
   const overlay = document.createElement('div');
   overlay.classList.add('overlay');
 
@@ -299,7 +299,8 @@ helpBtn.addEventListener('click', () => {
   }
   );
 }
-);
+
+helpBtn.addEventListener('click', helpFn());
 
 function highlight() {
   const selection = window.getSelection();
@@ -315,6 +316,5 @@ function highlight() {
 // for mouse drag
 document.addEventListener('mouseup', highlight);
 
-
-
+window.onload(helpFn());
 

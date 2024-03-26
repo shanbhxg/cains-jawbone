@@ -316,5 +316,5 @@ function highlight() {
 // for mouse drag
 document.addEventListener('mouseup', highlight);
 
-window.onload = helpFn();
+window.onload = helpFn;
 
